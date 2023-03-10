@@ -9,7 +9,7 @@ const exphbs  = require('express-handlebars');
 // Configure PostgreSQL connection
 const pool = new pg.Pool({
     user: 'zwuproll',
-    host: 'isilo.db.elephantsql.com (isilo-01)',
+    host: 'postgres://zwuproll:I-TP-rA7fbP-iSQhP2EzrOxwwCwki4SO@isilo.db.elephantsql.com/zwuproll',
     database: 'seneca DB',
     password: 'I-TP-rA7fbP-iSQhP2EzrOxwwCwki4SO',
     port: 5432
