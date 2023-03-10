@@ -8,10 +8,10 @@ const exphbs  = require('express-handlebars');
 
 // Configure PostgreSQL connection
 const pool = new pg.Pool({
-    user: 'krhypwqm',
-    host: 'suleiman.db.elephantsql.com',
-    database: 'krhypwqm',
-    password: '0s9wUh-JU1SkxoXswFTv_zGYlicaX2Pp',
+    user: 'zwuproll',
+    host: 'zwuproll',
+    database: 'seneca DB',
+    password: 'I-TP-rA7fbP-iSQhP2EzrOxwwCwki4SO',
     port: 5432
 });
 
@@ -64,42 +64,57 @@ app.get('/update-user', (req, res) => {
 });
 
 // Update user data in database
-app.post('/update-user', (req, res) => {
-    const id = req.body.id;
-    const name = req.body.name;
-    const email = req.body.email;
-  
-    // Update user data in database
-    const result = pool.query(
-    'UPDATE users SET name = $1, email = $2 WHERE id = $3',
-    [name, email,id],
-
-    (error) => {
-        if (error) {
-            console.log(error); res.status(500).json({ message: 'Error Updating data into PostgreSQL' });
-        } else {
-            res.redirect("/");
+    app.post('/update-user', async (req, res) => {
+        const id = req.query.id;
+        const name = req.body.name;
+        const email = req.body.email;
+      
+        try {
+          const client = await pool.connect();
+          await client.query('BEGIN');
+          const result = await client.query('UPDATE users SET name = $1, email = $2 WHERE id = $3', [name, email, id]);
+          const rowCount = result.rowCount;
+          await client.query('COMMIT');
+      
+          if (rowCount == 0) {
+            res.status(404).json({ message: 'User not found.' });
+          } else {
+            res.redirect('/');
+          }
+        } catch (err) {
+          console.error(err);
+          await client.query('ROLLBACK');
+          res.status(500).json({ message: 'Error updating data into PostgreSQL.' });
+        } finally {
+          client.release();
         }
-    });
-
-  });
+      });
 
 // Delete user data in database
-app.get('/delete-user', (req, res) => {
-    const id = req.query.id;
-    // Delete user data from database
-    const result = pool.query(
-    'DELETE FROM users WHERE id = $1',
-    [id],
-    (error) => {
-        if (error) {
-            console.log(error); res.status(500).json({ message: 'Error Delete data from PostgreSQL' });
-        } else {
-            res.redirect("/");
+    app.get('/delete-user', async (req, res) => {
+        const id = req.query.id;
+      
+        try {
+          const client = await pool.connect();
+          await client.query('BEGIN');
+          const result = await client.query('DELETE FROM users WHERE id = $1', [id]);
+          const rowCount = result.rowCount;
+          await client.query('COMMIT');
+      
+          if (rowCount == 0) {
+            res.status(404).json({ message: 'User not found.' });
+          } else {
+            res.redirect('/');
+          }
+        } catch (err) {
+          console.error(err);
+          await client.query('ROLLBACK');
+          res.status(500).json({ message: 'Error deleting data from PostgreSQL.' });
+        } finally {
+          client.release();
         }
-    });
-
-  });
+      });
+      
 
 // Handle form submission
 app.post('/insert-user', (req, res) => {

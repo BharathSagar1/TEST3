@@ -11,18 +11,18 @@
         <h1>User List</h1>
     </center>
     <form method="post" action="/update-user">
-    <table>
+        <table>
         <tr>
             <td><label for="id">ID:</label></td>
-            <td><input type="number" id="id" readonly="true" name="id" value="{{users.id}}"></td>
+            <td><input type="number" id="id" readonly="true" name="id" value=""></td>
         </tr>
         <tr>
             <td><label for="name">Name:</label></td>
-            <td><input type="text" id="name" name="name" value="{{users.name}}"></td>
+            <td><input type="text" id="name" name="name" value=""></td>
         </tr>
         <tr>
             <td><label for="email">Email:</label></td>
-            <td><input type="email" id="email" name="email" value="{{users.email}}"></td>
+            <td><input type="email" id="email" name="email" value=""></td>
         </tr>
         <tr>
             <td colspan="2"><a href="/">back</a> | <input type="submit" value="Update"></td>
