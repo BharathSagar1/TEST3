@@ -8,10 +8,10 @@
   "scripts": {
     "start": "node server.js"
   },
-  "name": "zcc-users",
+  "name": "TEST3",
   "version": "1.0.0",
   "main": "server.js",
-  "author": "Matin Maleki",
+  "author": "Bharath Pudota",
   "license": "ISC",
   "description": ""
 }
